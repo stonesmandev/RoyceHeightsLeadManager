@@ -1,0 +1,76 @@
+import React, { useState } from 'react';
+import { Button, Input, Table, Modal } from "@/components/ui";
+import { Mail } from "lucide-react";
+
+export default function LeadManagementApp() {
+    const [leads, setLeads] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [newLead, setNewLead] = useState({ name: '', email: '', phone: '', source: '', followUp: '' });
+
+    const addLead = () => {
+        setLeads([...leads, { ...newLead, id: leads.length + 1 }]);
+        setNewLead({ name: '', email: '', phone: '', source: '', followUp: '' });
+        setShowModal(false);
+    };
+
+    return (
+        <div className="p-6 max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold mb-4">Lead Management System</h1>
+            <Button onClick={() => setShowModal(true)}>Add New Lead</Button>
+
+            <Table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Source</th>
+                        <th>Follow-up Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {leads.map((lead) => (
+                        <tr key={lead.id}>
+                            <td>{lead.name}</td>
+                            <td>{lead.email}</td>
+                            <td>{lead.phone}</td>
+                            <td>{lead.source}</td>
+                            <td>{lead.followUp}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+
+            <Modal show={showModal} onClose={() => setShowModal(false)}>
+                <h2 className="text-xl font-bold mb-4">Add New Lead</h2>
+                <Input
+                    placeholder="Name"
+                    value={newLead.name}
+                    onChange={(e) => setNewLead({ ...newLead, name: e.target.value })}
+                />
+                <Input
+                    placeholder="Email"
+                    value={newLead.email}
+                    onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
+                />
+                <Input
+                    placeholder="Phone"
+                    value={newLead.phone}
+                    onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
+                />
+                <Input
+                    placeholder="Lead Source (Social Media/Google/Walk-in)"
+                    value={newLead.source}
+                    onChange={(e) => setNewLead({ ...newLead, source: e.target.value })}
+                />
+                <Input
+                    placeholder="Follow-up Date"
+                    type="date"
+                    value={newLead.followUp}
+                    onChange={(e) => setNewLead({ ...newLead, followUp: e.target.value })}
+                />
+                <Button onClick={addLead} className="mt-4">Add Lead</Button>
+            </Modal>
+        </div>
+    );
+}
